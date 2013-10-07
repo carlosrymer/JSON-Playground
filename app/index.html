@@ -1,0 +1,246 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" id="ng-app"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="jsonPlayground" ng-controller="jsonPlay"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="jsonPlayground" ng-controller="jsonPlay"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>JSON Playground - Generate Custom JSON Files for Testing</title>
+
+    <meta name="keywords" content="json, json playground, json forms, custom generator, json files, generate json, json generator, json online, json tool, json testing, json tests" />
+    <meta name="description" content="The JSON Playground is a free online tool that allows the generation of custom json files in any structure for testing purposes." />
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbower -->
+    <!-- endbuild --> 
+
+    <!-- build:js scripts/lib.js -->
+    <!-- bower:js -->
+    <script src="bower_components/modernizr/modernizr.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+</head>
+
+</head>
+<body class="ng-cloak">
+    <!--[if lt IE 9]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="row">
+        <h1>
+            <center>JSON Playground</center>
+        </h1>
+
+        <center>
+            <p>
+                The JSON Playground allows you to generate a custom JSON file in a flexible manner. Start by creating top level and sub-level elements as needed (up to 3 sublevels allowed). You can choose to generate the JSON file with a callback if you will be using it to test with JavaScript. Give it a try!
+            </p>
+        </center>
+    </div>
+
+    <br />
+
+
+    <!-- Start Levels Loop -->
+    <div class="row" ng-repeat="level in levels track by $index">
+        <hr ng-hide="$first" />
+
+        <div class="small-12">
+
+          <i class="foundicon-trash" ng-click="levels.splice($index,1)"></i>
+
+          <div data-clearing>
+            <div class="small-2 columns">
+              <label for="right-label" class="left inline">Level {{ $index + 1 }} Key</label>
+            </div>
+            <div class="small-10 columns">
+              <input type="text" name="levelkey1[]" value="{{level.key}}" ng-model="level.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+            </div>
+          </div>
+
+          <div data-clearing>
+            <div class="small-2 columns">
+              <label for="right-label" class="left inline">Level {{ $index + 1 }} Value</label>
+            </div>
+            <div class="small-10 columns">
+              <input type="text" name="levelvalue1[]" value="{{level.value}}" ng-model="level.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+            </div>
+          </div>
+
+        </div>
+
+        <div class="small-4 columns right">
+            <div class="medium secondary button expand" ng-click="addLevel(level.sublevels);updateLocalStorage()">
+                Add Sublevel
+            </div>
+        </div>
+
+        <!-- Start First Sublevels Loop -->
+        <div data-clearing ng-repeat="sl1 in level.sublevels track by $index">
+            <hr />
+
+            <div data-clearing>
+                <div class="small-10 columns right">
+                      <i class="foundicon-trash" ng-click="level.sublevels.splice($index,1)"></i>
+                      <div class="row">
+                        <div class="small-2 columns">
+                          <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Key</label>
+                        </div>
+                        <div class="small-10 columns">
+                          <input type="text" name="levelkey2[]" value="{{sl1.key}}" ng-model="sl1.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="small-2 columns">
+                          <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Value</label>
+                        </div>
+                        <div class="small-10 columns">
+                          <input type="text" name="levelvalue2[]" value="{{sl1.value}}" ng-model="sl1.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+            <div data-clearing>
+                <div class="small-3 columns right">
+                    <div class="small secondary button expand" ng-click="addLevel(sl1.sublevels);updateLocalStorage()">
+                        Add Sublevel
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Second Sublevels Loop -->
+            <div data-clearing ng-repeat="sl2 in sl1.sublevels track by $index">
+                <hr />
+
+                <div data-clearing>
+                    <div class="small-8 columns right">
+                          <i class="foundicon-trash" ng-click="sl1.sublevels.splice($index,1)"></i>
+                          <div class="row">
+                            <div class="small-2 columns">
+                              <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Key</label>
+                            </div>
+                            <div class="small-10 columns">
+                              <input type="text" name="levelkey3[]" value="{{sl2.key}}" ng-model="sl2.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="small-2 columns">
+                              <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Value</label>
+                            </div>
+                            <div class="small-10 columns">
+                              <input type="text" name="levelvalue3[]" value="{{sl2.value}}" ng-model="sl2.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+                            </div>
+                          </div>
+                    </div>
+                </div>
+
+                <div data-clearing>
+                    <div class="small-2 columns right">
+                        <div class="tiny secondary button expand" ng-click="addLevel(sl2.sublevels, true);updateLocalStorage()">
+                            Add Sublevel
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start Third Sublevels Loop -->
+                <div data-clearing ng-repeat="sl3 in sl2.sublevels track by $index">
+                    <hr />
+
+                    <div data-clearing>
+                        <div class="small-6 columns right">
+                              <i class="foundicon-trash" ng-click="sl2.sublevels.splice($index,1)"></i>
+                              <div class="row">
+                                <div class="small-2 columns">
+                                  <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Key</label>
+                                </div>
+                                <div class="small-10 columns">
+                                  <input type="text" name="levelkey4[]" value="{{sl3.key}}" ng-model="sl3.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="small-2 columns">
+                                  <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Value</label>
+                                </div>
+                                <div class="small-10 columns">
+                                  <input type="text" name="levelvalue4[]" value="{{sl3.value}}" ng-model="sl3.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <!-- End Third Sublevels Loop -->
+            </div>
+            <!-- End Second Sublevels Loop -->
+        </div>
+        <!-- End Third Sublevels Loop -->
+    </div>
+    <!-- End Levels Loop -->
+
+    <div class="row" ng-if="callbackActionState">
+        <hr />
+        <div class="small-12 columns">
+          <div class="row">
+
+            <div class="small-2 columns">
+              <label for="right-label" class="left inline">Callback</label>
+            </div>
+            <div class="small-10 columns">
+              <input type="text" name="callback" ng-model="callback" placeholder="Type in a callback here" />
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <a href="#addlevel" id="addlevel" class="large button expand" ng-click="addLevel(levels);updateLocalStorage()">
+                Add Level
+            </a>
+
+            <a href="#addcallback" id="addcallback" class="large button expand" ng-click="toggleCallbackState()">
+                {{ callbackActionText[callbackActionState] }} Callback
+            </a>
+
+            <a href="#startfresh" id="startfresh" class="large button expand" ng-click="levels=fresh;updateLocalStorage()">
+                Start Fresh
+            </a>
+
+            <a href="#generate" id="generate" class="large button expand" ng-click="getJson()">Download JSON File</a>
+        </div>
+    </div>
+
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="scripts/app.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','UA-XXXXX-X');ga('send','pageview');
+    </script>
+
+</body>
+</html>
