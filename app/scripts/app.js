@@ -49,7 +49,7 @@ jsonPlayground.controller('jsonPlay', function($scope, $http) {
 	$scope.getJson = function()
 	{
 		var d = {"callback": ($scope.callback ? "true" : "false"), "json": JSON.stringify($scope.levels)};
-		$http({method: 'POST', url: 'http://127.0.0.1/jsonplayground/app/process.php', params: d, headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+		$http({method: 'POST', url: 'process.php', params: d, headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
 	}
 
 });
