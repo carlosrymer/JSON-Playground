@@ -13,7 +13,7 @@
     <title>JSON Playground - Generate Custom JSON Files for Testing</title>
 
     <meta name="keywords" content="json, json playground, json forms, custom generator, json files, generate json, json generator, json online, json tool, json testing, json tests" />
-    <meta name="description" content="The JSON Playground is a free online tool that allows the generation of custom json files in any structure for testing purposes." />
+    <meta name="description" content="The JSON Playground is a free online tool that allows the generation of custom json files for testing purposes." />
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -42,189 +42,172 @@
             <center>JSON Playground</center>
         </h1>
 
-        <center>
-            <p>
-                The JSON Playground allows you to generate a custom JSON file in a flexible manner. Start by creating top level and sub-level elements as needed (up to 3 sublevels allowed). You can choose to generate the JSON file with a callback if you will be using it to test with JavaScript. Give it a try!
-            </p>
-        </center>
+        <p class="columns">
+            The JSON Playground allows you to generate a custom JSON file in a flexible manner. There are four levels of child items you can define, and at each level you can add data by specifying the key and the value for as many fields as necessary. For child arrays, the key is automatically "children[index]," where index is the index of the parent key value item. 
+        </p>
+        <p class="columns">
+            Start by adding general data, and then proceed to adding children as needed. ake sure to download your file once you have it generated. Give it a try!
+        </p>
     </div>
 
     <br />
 
+    <form method="POST" action="http://localhost:3000/json">
 
-    <!-- Start Levels Loop -->
-    <div class="row" ng-repeat="level in levels track by $index">
-        <hr ng-hide="$first" />
+        <!-- Start Levels Loop -->
+        <div class="row" ng-repeat="level in levels track by $index">
+            <hr ng-hide="$first" />
 
-        <div class="small-12">
+            <div class="small-12">
 
-          <i class="foundicon-trash" ng-click="levels.splice($index,1)"></i>
+              <i class="foundicon-trash" ng-click="levels.splice($index,1)"></i>
 
-          <div data-clearing>
-            <div class="small-2 columns">
-              <label for="right-label" class="left inline">Level {{ $index + 1 }} Key</label>
+              <div data-clearing>
+                <div class="small-2 columns">
+                  <label for="right-label" class="left inline">Item {{ $index + 1 }} Key</label>
+                </div>
+                <div class="small-10 columns">
+                  <input type="text" value="{{level.key}}" ng-model="level.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+                </div>
+              </div>
+
+              <div data-clearing>
+                <div class="small-2 columns">
+                  <label for="right-label" class="left inline">Item {{ $index + 1 }} Value</label>
+                </div>
+                <div class="small-10 columns">
+                  <input type="text" name="json[{{level.key}}]" value="{{level.value}}" ng-model="level.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+                </div>
+              </div>
+
             </div>
-            <div class="small-10 columns">
-              <input type="text" name="levelkey1[]" value="{{level.key}}" ng-model="level.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
-            </div>
-          </div>
 
-          <div data-clearing>
-            <div class="small-2 columns">
-              <label for="right-label" class="left inline">Level {{ $index + 1 }} Value</label>
-            </div>
-            <div class="small-10 columns">
-              <input type="text" name="levelvalue1[]" value="{{level.value}}" ng-model="level.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
-            </div>
-          </div>
-
-        </div>
-
-        <div class="small-4 columns right">
-            <div class="medium secondary button expand" ng-click="addLevel(level.sublevels);updateLocalStorage()">
-                Add Sublevel
-            </div>
-        </div>
-
-        <!-- Start First Sublevels Loop -->
-        <div data-clearing ng-repeat="sl1 in level.sublevels track by $index">
-            <hr />
-
-            <div data-clearing>
-                <div class="small-10 columns right">
-                      <i class="foundicon-trash" ng-click="level.sublevels.splice($index,1)"></i>
-                      <div class="row">
-                        <div class="small-2 columns">
-                          <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Key</label>
-                        </div>
-                        <div class="small-10 columns">
-                          <input type="text" name="levelkey2[]" value="{{sl1.key}}" ng-model="sl1.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="small-2 columns">
-                          <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Value</label>
-                        </div>
-                        <div class="small-10 columns">
-                          <input type="text" name="levelvalue2[]" value="{{sl1.value}}" ng-model="sl1.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
-                        </div>
-                      </div>
+            <div class="small-4 columns right">
+                <div class="medium secondary button expand" ng-click="addLevel(level.sublevels);updateLocalStorage()">
+                    Add New Child
                 </div>
             </div>
 
-            <div data-clearing>
-                <div class="small-3 columns right">
-                    <div class="small secondary button expand" ng-click="addLevel(sl1.sublevels);updateLocalStorage()">
-                        Add Sublevel
-                    </div>
-                </div>
-            </div>
-
-            <!-- Start Second Sublevels Loop -->
-            <div data-clearing ng-repeat="sl2 in sl1.sublevels track by $index">
+            <!-- Start First Sublevels Loop -->
+            <div data-clearing ng-repeat="sl1 in level.sublevels track by $index">
                 <hr />
 
                 <div data-clearing>
-                    <div class="small-8 columns right">
-                          <i class="foundicon-trash" ng-click="sl1.sublevels.splice($index,1)"></i>
+                    <div class="small-10 columns right">
+                          <i class="foundicon-trash" ng-click="level.sublevels.splice($index,1)"></i>
                           <div class="row">
                             <div class="small-2 columns">
-                              <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Key</label>
+                              <label for="right-label" class="left inline">Child Item {{ $index + 1 }} Key</label>
                             </div>
                             <div class="small-10 columns">
-                              <input type="text" name="levelkey3[]" value="{{sl2.key}}" ng-model="sl2.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+                              <input type="text" value="{{sl1.key}}" ng-model="sl1.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
                             </div>
                           </div>
 
                           <div class="row">
                             <div class="small-2 columns">
-                              <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Value</label>
+                              <label for="right-label" class="left inline">Child Item {{ $index + 1 }} Value</label>
                             </div>
                             <div class="small-10 columns">
-                              <input type="text" name="levelvalue3[]" value="{{sl2.value}}" ng-model="sl2.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+                              <input type="text" name="json[children{{ $parent.$index }}][{{ sl1.key }}]" value="{{sl1.value}}" ng-model="sl1.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
                             </div>
                           </div>
                     </div>
                 </div>
 
                 <div data-clearing>
-                    <div class="small-2 columns right">
-                        <div class="tiny secondary button expand" ng-click="addLevel(sl2.sublevels, true);updateLocalStorage()">
-                            Add Sublevel
+                    <div class="small-3 columns right">
+                        <div class="small secondary button expand" ng-click="addLevel(sl1.sublevels);updateLocalStorage()">
+                            Add New Child
                         </div>
                     </div>
                 </div>
 
-                <!-- Start Third Sublevels Loop -->
-                <div data-clearing ng-repeat="sl3 in sl2.sublevels track by $index">
+                <!-- Start Second Sublevels Loop -->
+                <div data-clearing ng-repeat="sl2 in sl1.sublevels track by $index">
                     <hr />
 
                     <div data-clearing>
-                        <div class="small-6 columns right">
-                              <i class="foundicon-trash" ng-click="sl2.sublevels.splice($index,1)"></i>
+                        <div class="small-8 columns right">
+                              <i class="foundicon-trash" ng-click="sl1.sublevels.splice($index,1)"></i>
                               <div class="row">
                                 <div class="small-2 columns">
-                                  <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Key</label>
+                                  <label for="right-label" class="left inline">Child Item {{ $index + 1 }} Key</label>
                                 </div>
                                 <div class="small-10 columns">
-                                  <input type="text" name="levelkey4[]" value="{{sl3.key}}" ng-model="sl3.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+                                  <input type="text" value="{{sl2.key}}" ng-model="sl2.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
                                 </div>
                               </div>
 
                               <div class="row">
                                 <div class="small-2 columns">
-                                  <label for="right-label" class="left inline">Sublevel {{ $index + 1 }} Value</label>
+                                  <label for="right-label" class="left inline">Child Item {{ $index + 1 }} Value</label>
                                 </div>
                                 <div class="small-10 columns">
-                                  <input type="text" name="levelvalue4[]" value="{{sl3.value}}" ng-model="sl3.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+                                  <input type="text" name="json[children{{ $parent.$parent.$index }}][children{{ $parent.$index }}][{{ sl2.key }}]" value="{{sl2.value}}" ng-model="sl2.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
                                 </div>
                               </div>
                         </div>
                     </div>
-                    <hr />
+
+                    <div data-clearing>
+                        <div class="small-2 columns right">
+                            <div class="tiny secondary button expand" ng-click="addLevel(sl2.sublevels, true);updateLocalStorage()">
+                                Add New Child
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Start Third Sublevels Loop -->
+                    <div data-clearing ng-repeat="sl3 in sl2.sublevels track by $index">
+                        <hr />
+
+                        <div data-clearing>
+                            <div class="small-6 columns right">
+                                  <i class="foundicon-trash" ng-click="sl2.sublevels.splice($index,1)"></i>
+                                  <div class="row">
+                                    <div class="small-2 columns">
+                                      <label for="right-label" class="left inline">Child Item {{ $index + 1 }} Key</label>
+                                    </div>
+                                    <div class="small-10 columns">
+                                      <input type="text" value="{{sl3.key}}" ng-model="sl3.key" ng-blur="updateLocalStorage()" placeholder="Type in a key here" />
+                                    </div>
+                                  </div>
+
+                                  <div class="row">
+                                    <div class="small-2 columns">
+                                      <label for="right-label" class="left inline">Child Item {{ $index + 1 }} Value</label>
+                                    </div>
+                                    <div class="small-10 columns">
+                                      <input type="text" name="json[children{{ $parent.$parent.$parent.$index }}][children{{ $parent.$parent.$index }}][children{{ $parent.$index }}][{{ sl3.key }}]" value="{{sl3.value}}" ng-model="sl3.value" ng-blur="updateLocalStorage()" placeholder="Type in a value here" />
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <!-- End Third Sublevels Loop -->
                 </div>
-                <!-- End Third Sublevels Loop -->
+                <!-- End Second Sublevels Loop -->
             </div>
-            <!-- End Second Sublevels Loop -->
+            <!-- End Third Sublevels Loop -->
         </div>
-        <!-- End Third Sublevels Loop -->
-    </div>
-    <!-- End Levels Loop -->
+        <!-- End Levels Loop -->
 
-    <div class="row" ng-if="callbackActionState">
-        <hr />
-        <div class="small-12 columns">
-          <div class="row">
+        <div class="row">
+            <div class="small-12 columns">
+                <a href="#addlevel" id="addlevel" class="large button expand" ng-click="addLevel(levels);updateLocalStorage()">
+                    Add New Item
+                </a>
 
-            <div class="small-2 columns">
-              <label for="right-label" class="left inline">Callback</label>
+                <a href="#startfresh" id="startfresh" class="large button expand" ng-click="startOver();updateLocalStorage()">
+                    Start Fresh
+                </a>
+
+                <input type="submit" id="generate" class="large button expand" value="See JSON Results" />
             </div>
-            <div class="small-10 columns">
-              <input type="text" name="callback" ng-model="callback" placeholder="Type in a callback here" />
-            </div>
-          </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="small-12 columns">
-            <a href="#addlevel" id="addlevel" class="large button expand" ng-click="addLevel(levels);updateLocalStorage()">
-                Add Level
-            </a>
-
-            <a href="#addcallback" id="addcallback" class="large button expand" ng-click="toggleCallbackState()">
-                {{ callbackActionText[callbackActionState] }} Callback
-            </a>
-
-            <a href="#startfresh" id="startfresh" class="large button expand" ng-click="levels=fresh;updateLocalStorage()">
-                Start Fresh
-            </a>
-
-            <a href="#generate" id="generate" class="large button expand" ng-click="getJson()">Download JSON File</a>
-        </div>
-    </div>
-
+    </form>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
