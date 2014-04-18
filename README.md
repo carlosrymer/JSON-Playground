@@ -1,7 +1,7 @@
 JSON Playground
 ===============
 
-The JSON Playground is a free online tool that allows the generation of custom json files in any structure for testing purposes. You can access the live tool [here](http://jsonplayground.com), but the source is also available to fork for other applications of the tool. It runs on AngularJS (v1.2.0-rc.2) and Foundation (v4.3.2).
+The JSON Playground is a tool that allows the generation of custom json files in any structure for testing purposes. The source is available to fork for other applications of the tool. It runs on AngularJS (v1.2.0-rc.2) and Foundation (v4.3.2).
 
 Requirements
 ------------
